@@ -10,7 +10,7 @@ object LaunchBuild extends Build {
   lazy val launcher = project("launcher").settings(assemblyJarName in assembly := "launcher.jar")
   lazy val core = project("core").withDependencies(powerscala.property, scalaTest)
   lazy val update = project("update").dependsOn(core)
-  lazy val deploy = project("deploy").dependsOn(core)
+  lazy val deploy = project("deploy").withDependencies(sshj).dependsOn(core)
 
   private def project(projectName: String) = Project(id = projectName, base = file(projectName)).settings(
     name := s"${Details.name}-$projectName",
@@ -83,5 +83,6 @@ object Dependencies {
   object powerscala {
     val property = "org.powerscala" %% "powerscala-property" % powerscalaVersion
   }
+  val sshj = "com.hierynomus" % "sshj" % "0.12.0"
   val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
 }
