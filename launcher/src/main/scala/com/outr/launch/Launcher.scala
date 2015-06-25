@@ -11,6 +11,7 @@ import scala.io.Source
  */
 object Launcher {
   private val jarDir = new File("jars")
+  private val fileSeparator = System.getProperty("file.separator")
 
   private def usage() = {
     println(s"Usage: Launcher <process|classloader> <main-class> <args...>")
@@ -34,7 +35,8 @@ object Launcher {
       val jar = jars.head
       jars.tail.foreach(j => j.file.delete())
 
-      val javaPath = s"${System.getProperty("java.home")}/bin/java"
+      val extension = if (fileSeparator == "/") "" else "w.exe"
+      val javaPath = s"${System.getProperty("java.home")}${fileSeparator}bin${fileSeparator}java$extension"
 
       if (useProcess) {
         val b = ListBuffer.empty[String]
